@@ -1,6 +1,6 @@
 package com.tghelper.globalosin.core.entity.address;
 
-import com.tghelper.globalosin.AppError;
+import com.tghelper.globalosin.core.AppError;
 import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
@@ -41,26 +41,6 @@ public class Address extends BaseEntity implements Serializable {
         super();
     }
     
-    @Override
-    public void update(Object... fields) {
-        String fullAddress = (String) fields[0];
-        Street street = (Street) fields[1];
-        Wand wand = (Wand) fields[2];
-        District district = (District) fields[3];
-        ProvinceCity provinceCity = (ProvinceCity) fields[4];
-        
-        PreCondition.notEmpty(fullAddress, AppError.FULL_ADDRESS_IS_REQUIRED);
-        PreCondition.notNull(wand, AppError.WAND_IS_REQUIRED);
-        PreCondition.notNull(district, AppError.DISTRICT_IS_REQUIRED);
-        PreCondition.notNull(provinceCity, AppError.PROVINCE_CITY_IS_REQUIRED);
-        
-        this.fullAddress = fullAddress;
-        this.street = street;
-        this.wand = wand;
-        this.district = district;
-        this.provinceCity = provinceCity;
-    }
-    
     public Address(String fullAddress) {
         super();
         this.fullAddress = fullAddress;
@@ -69,6 +49,26 @@ public class Address extends BaseEntity implements Serializable {
     public Address(String fullAddress, Street street,
               Wand wand, District district,
               ProvinceCity provinceCity) {
+        this.fullAddress = fullAddress;
+        this.street = street;
+        this.wand = wand;
+        this.district = district;
+        this.provinceCity = provinceCity;
+    }
+    
+    @Override
+    public void update(Object... fields) {
+        String fullAddress = (String) fields[0];
+        Street street = (Street) fields[1];
+        Wand wand = (Wand) fields[2];
+        District district = (District) fields[3];
+        ProvinceCity provinceCity = (ProvinceCity) fields[4];
+
+        PreCondition.notEmpty(fullAddress, AppError.FULL_ADDRESS_IS_REQUIRED);
+        PreCondition.notNull(wand, AppError.WAND_IS_REQUIRED);
+        PreCondition.notNull(district, AppError.DISTRICT_IS_REQUIRED);
+        PreCondition.notNull(provinceCity, AppError.PROVINCE_CITY_IS_REQUIRED);
+
         this.fullAddress = fullAddress;
         this.street = street;
         this.wand = wand;

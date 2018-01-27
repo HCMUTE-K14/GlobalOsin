@@ -1,10 +1,11 @@
 package com.tghelper.globalosin.application.service.address.impl;
 
-import com.tghelper.globalosin.application.service.BaseServiceImpl;
-import com.tghelper.globalosin.application.service.address.ProvinceCityService;
 import com.tghelper.globalosin.core.entity.address.ProvinceCity;
 import com.tghelper.globalosin.core.repository.address.ProvinceCityRepository;
-import java.util.List;
+import com.tghelper.globalosin.exception.EntityDoesNotExistException;
+import com.tghelper.globalosin.exception.UpdateEntityException;
+import com.tghelper.globalosin.application.service.BaseServiceImpl;
+import com.tghelper.globalosin.application.service.address.ProvinceCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +15,36 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProvinceCityServiceImpl extends
-                                 BaseServiceImpl<ProvinceCity, String, ProvinceCityRepository> implements
-                                                                                               ProvinceCityService {
+                                     BaseServiceImpl<ProvinceCity, String, ProvinceCityRepository> implements
+                                                                                                   ProvinceCityService {
     
     @Autowired
-    public ProvinceCityServiceImpl(
-              ProvinceCityRepository repository) {
+    public ProvinceCityServiceImpl(ProvinceCityRepository repository) {
         super(repository);
     }
     
     @Override
     public ProvinceCity update(ProvinceCity entity) {
-        ProvinceCity updaded = findById(entity.getId());
-        return null;
+        try {
+            ProvinceCity updated = findById(entity.getId());
+            updated.update(entity.getName(), entity.getDistricts());
+            
+            return mRepository.save(updated);
+        } catch (Exception ex) {
+            throw new UpdateEntityException("Something went wrong when updating Province/City", ex);
+        }
     }
     
     @Override
-    public List<ProvinceCity> findProvinceCityByName(String name) {
-        return null;
+    public ProvinceCity findProvinceCityByName(String name) {
+        try {
+            ProvinceCity provinceCity = mRepository.findProvinceCitiesByName(name);
+            if (provinceCity == null) {
+                throw new Exception();
+            }
+            return provinceCity;
+        } catch (Exception ex) {
+            throw new EntityDoesNotExistException(name + " does not exist", ex);
+        }
     }
 }

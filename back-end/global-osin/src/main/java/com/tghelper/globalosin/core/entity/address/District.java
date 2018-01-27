@@ -1,5 +1,7 @@
 package com.tghelper.globalosin.core.entity.address;
 
+import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,14 +39,20 @@ public class District extends BaseEntity implements Serializable {
         super();
     }
     
-    @Override
-    public void update(Object... fields) {
-    
-    }
-    
     public District(String name) {
         super();
         this.name = name;
+    }
+    
+    @Override
+    public void update(Object... fields) {
+        String name = (String) fields[0];
+        List<Wand> wands = (List<Wand>) fields[1];
+        
+        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
+        
+        this.name = name;
+        this.wands = wands;
     }
     
     public List<Wand> getWands() {
@@ -83,7 +91,7 @@ public class District extends BaseEntity implements Serializable {
         }
         
         District district = (District) o;
-    
+        
         return name != null ? name.equals(district.name) : district.name == null;
     }
     

@@ -1,7 +1,5 @@
 package com.tghelper.globalosin.core;
 
-import com.tghelper.globalosin.AppError;
-
 /**
  * Created by infamouSs on 1/26/18.
  */
@@ -29,7 +27,7 @@ public final class PreCondition {
     }
     
     public static void notEmpty(String string, AppError error) {
-        notEmpty(string, error.getDescription());
+        notEmpty(string, error.getMessage());
     }
     
     public static void notNull(Object reference, String errorMessage) {
@@ -39,6 +37,6 @@ public final class PreCondition {
     }
     
     public static void notNull(Object reference, AppError error) {
-        notNull(reference, error.getDescription());
+        notNull(reference, error.getMessage());
     }
 }

@@ -1,5 +1,7 @@
 package com.tghelper.globalosin.core.entity.address;
 
+import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,14 +40,20 @@ public class ProvinceCity extends BaseEntity implements Serializable {
         super();
     }
     
-    @Override
-    public void update(Object... fields) {
-    
-    }
-    
     public ProvinceCity(String name) {
         super();
         this.name = name;
+    }
+    
+    @Override
+    public void update(Object... fields) {
+        String name = (String) fields[0];
+        List<District> districts = (List<District>) fields[1];
+        
+        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
+        
+        this.name = name;
+        this.districts = districts;
     }
     
     public void addDistrict(District district) {

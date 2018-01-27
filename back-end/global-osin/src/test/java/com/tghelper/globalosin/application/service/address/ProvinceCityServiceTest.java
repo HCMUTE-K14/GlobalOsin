@@ -22,13 +22,12 @@ public class ProvinceCityServiceTest {
     ProvinceCityService mProvinceCityService;
     
     private ProvinceCity createProvinceData() {
-        ProvinceCity provinceCity = new ProvinceCity();
+        ProvinceCity provinceCity = new ProvinceCity("");
         
         District district = new District("Quan 1");
         District district1 = new District("Quan 2");
         
-        provinceCity.addDistrict(district1);
-        provinceCity.addDistrict(district);
+        provinceCity.setDistricts(null);
         
         return provinceCity;
     }
@@ -43,6 +42,9 @@ public class ProvinceCityServiceTest {
     public void testSaveProvinceCity() {
         ProvinceCity provinceCity = createProvinceData();
         
-        mProvinceCityService.update(provinceCity);
+        mProvinceCityService.create(provinceCity);
+        
+        org.junit.Assert
+                  .assertNotNull(mProvinceCityService.findProvinceCityByName("Tp Ho Chi Minh"));
     }
 }

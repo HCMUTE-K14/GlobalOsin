@@ -17,7 +17,7 @@ import javax.persistence.PreUpdate;
 public abstract class BaseEntity implements Serializable {
     
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", unique = true, nullable = false)
     protected String id;
     
     @Column(name = "date_created", nullable = false)

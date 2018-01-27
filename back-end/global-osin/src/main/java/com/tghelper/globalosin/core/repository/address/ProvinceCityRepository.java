@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface ProvinceCityRepository extends JpaRepository<ProvinceCity, String> {
     
     @Query(value = "SELECT * FROM tbl_province_city  where name = ?1", nativeQuery = true)
-    abstract ProvinceCity findProvinceCitiesByName(String name);
+    ProvinceCity findProvinceCitiesByName(String name);
 }
