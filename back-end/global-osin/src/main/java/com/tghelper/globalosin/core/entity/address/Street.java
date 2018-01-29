@@ -1,12 +1,14 @@
 package com.tghelper.globalosin.core.entity.address;
 
-import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.ApplicationMessage;
 import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by infamouSs on 1/23/18.
@@ -16,6 +18,8 @@ import javax.persistence.Table;
 public class Street extends BaseEntity implements Serializable {
     
     @Column(name = "name")
+    @NotNull(message = "Name cannot be empty. Please enter a valid name")
+    @Size(min = 1)
     private String name;
     
     public Street() {
@@ -29,11 +33,11 @@ public class Street extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String name = (String) fields[0];
+        String _name = (String) fields[0];
         
-        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
+        PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
         
-        this.name = name;
+        this.name = _name;
     }
     
     public String getName() {
@@ -41,6 +45,7 @@ public class Street extends BaseEntity implements Serializable {
     }
     
     public void setName(String name) {
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         this.name = name;
     }
     

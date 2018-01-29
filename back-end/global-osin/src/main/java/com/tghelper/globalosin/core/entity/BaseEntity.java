@@ -5,10 +5,12 @@ import com.tghelper.globalosin.utils.UUIDGenerator;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Created by infamouSs on 1/23/18.
@@ -18,16 +20,20 @@ public abstract class BaseEntity implements Serializable {
     
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    protected String id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
     
     @Column(name = "date_created", nullable = false)
-    protected Date dateCreated;
+    private Date dateCreated;
     
     @Column(name = "date_modified", nullable = false)
-    protected Date dateModified;
+    private Date dateModified;
     
-    public BaseEntity() {
-    
+    protected BaseEntity() {
+        if (TextUtils.isEmpty(this.id)) {
+            this.id = UUIDGenerator.randomUUID();
+        }
     }
     
     @PrePersist
@@ -44,7 +50,7 @@ public abstract class BaseEntity implements Serializable {
         this.dateModified = new Date();
     }
     
-    abstract public void update(Object... fields);
+    public abstract void update(Object... fields);
     
     public String getId() {
         if (TextUtils.isEmpty(this.id)) {

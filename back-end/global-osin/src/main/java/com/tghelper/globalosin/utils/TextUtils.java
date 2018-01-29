@@ -6,6 +6,10 @@ package com.tghelper.globalosin.utils;
 
 public class TextUtils {
     
+    private TextUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
     }

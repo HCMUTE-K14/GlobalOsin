@@ -2,7 +2,10 @@ package com.tghelper.globalosin.core.repository.address;
 
 import com.tghelper.globalosin.core.entity.address.District;
 import com.tghelper.globalosin.core.entity.address.ProvinceCity;
+import java.util.Set;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -30,12 +34,12 @@ public class ProvinceCityRepositoryTest {
     
     @Before
     public void init() {
-//        ProvinceCity provinceCity = createProvinceData();
-//        mProvinceCityRepository.save(provinceCity);
+        //        ProvinceCity provinceCity = createProvinceData();
+        //        mProvinceCityRepository.save(provinceCity);
     }
     
-    private ProvinceCity createProvinceData() {
-        ProvinceCity provinceCity = new ProvinceCity();
+    private ProvinceCity createProvinceData(String name) {
+        ProvinceCity provinceCity = new ProvinceCity(name);
         
         District district = new District("Quan 1");
         District district1 = new District("Quan 2");
@@ -48,15 +52,45 @@ public class ProvinceCityRepositoryTest {
     
     @Test
     public void testSaveProvinceCity() {
-        ProvinceCity provinceCity = createProvinceData();
+        ProvinceCity provinceCity = createProvinceData("Ho Chi Minh City");
         mProvinceCityRepository.save(provinceCity);
         
         Assert.assertNotNull(mProvinceCityRepository.findAll());
     }
     
     @Test
+    public void testSaveProvinceCityWithNameEmpty() {
+        try {
+            ProvinceCity provinceCity = createProvinceData("");
+            mProvinceCityRepository.save(provinceCity);
+            
+            Assert.assertNotNull(mProvinceCityRepository.findAll());
+        } catch (IllegalArgumentException ex) {
+            Assert.assertEquals("Name is required", ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void testSaveProvinceCityWithNameNull() {
+        try {
+            ProvinceCity provinceCity = new ProvinceCity();
+            mProvinceCityRepository.save(provinceCity);
+            
+            Assert.assertNotNull(mProvinceCityRepository.findAll());
+        } catch (IllegalArgumentException ex) {
+            Assert.assertEquals("Name is required", ex.getMessage());
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            Set<ConstraintViolation<?>> errors = ((ConstraintViolationException) ex)
+                      .getConstraintViolations();
+            for (ConstraintViolation<?> i : errors) {
+                System.out.println(i);
+            }
+        }
+    }
+    
+    @Test
     public void testGetProvinceCityByName() {
-        ProvinceCity provinceCity1 = createProvinceData();
+        ProvinceCity provinceCity1 = createProvinceData("Ho Chi Minh City");
         mProvinceCityRepository.save(provinceCity1);
         
         ProvinceCity provinceCity = mProvinceCityRepository
@@ -67,11 +101,13 @@ public class ProvinceCityRepositoryTest {
     
     @Test
     public void testUpdateProvinceCity() {
-        ProvinceCity provinceCity = createProvinceData();
+        ProvinceCity provinceCity = createProvinceData("Ho Chi Minh city");
         mProvinceCityRepository.save(provinceCity);
         
         ProvinceCity provinceCityNeedToUpdate = mProvinceCityRepository
                   .findAll().get(0);
+        
+        System.out.println(provinceCityNeedToUpdate.getDistricts());
         
         provinceCityNeedToUpdate.setName("Ha Noi City");
         
@@ -80,12 +116,14 @@ public class ProvinceCityRepositoryTest {
         ProvinceCity hanoiProvince = (ProvinceCity) mProvinceCityRepository
                   .findProvinceCitiesByName("Ha Noi City");
         
-        Assert.assertNotNull(mProvinceCityRepository.findProvinceCitiesByName("Ha Noi City"));
+        System.out.println(hanoiProvince.getDistricts());
+        
+        Assert.assertNotNull(hanoiProvince);
     }
     
     @Test
     public void testDeleteProvinceCity() {
-        ProvinceCity provinceCity = createProvinceData();
+        ProvinceCity provinceCity = createProvinceData("Ha Noi City");
         mProvinceCityRepository.save(provinceCity);
         
         mProvinceCityRepository.deleteAll();

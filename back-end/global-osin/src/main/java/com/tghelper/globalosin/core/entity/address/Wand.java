@@ -1,6 +1,6 @@
 package com.tghelper.globalosin.core.entity.address;
 
-import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.ApplicationMessage;
 import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
@@ -14,7 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by infamouSs on 1/23/18.
@@ -23,8 +24,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "tbl_wand")
 public class Wand extends BaseEntity implements Serializable {
     
-    @NotBlank(message = "Name is required")
     @Column(name = "name")
+    @NotNull(message = "Name cannot be empty. Please enter a valid name")
+    @Size(min = 1)
     private String name;
     
     @OneToMany(
@@ -32,7 +34,7 @@ public class Wand extends BaseEntity implements Serializable {
               targetEntity = Street.class,
               cascade = {CascadeType.ALL}
     )
-    @JoinColumn(name = "street_id")
+    @JoinColumn(name = "wand_id")
     @OrderBy("name ASC")
     private List<Street> streets;
     
@@ -47,13 +49,13 @@ public class Wand extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String name = (String) fields[0];
-        List<Street> streets = (List<Street>) fields[1];
+        String _name = (String) fields[0];
+        List<Street> _streets = (List<Street>) fields[1];
         
-        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         
-        this.name = name;
-        this.streets = streets;
+        this.name = _name;
+        this.streets = _streets;
     }
     
     public String getName() {
@@ -61,6 +63,7 @@ public class Wand extends BaseEntity implements Serializable {
     }
     
     public void setName(String name) {
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         this.name = name;
     }
     
@@ -77,6 +80,30 @@ public class Wand extends BaseEntity implements Serializable {
             this.streets = new ArrayList<>();
         }
         this.streets.add(street);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        
+        Wand wand = (Wand) o;
+        
+        return name != null ? name.equals(wand.name) : wand.name == null;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
     
     @Override

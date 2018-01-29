@@ -1,6 +1,7 @@
 package com.tghelper.globalosin.configuration;
 
 import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class RestApiConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                   "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);

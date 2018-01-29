@@ -1,6 +1,6 @@
 package com.tghelper.globalosin.core.entity.address;
 
-import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.ApplicationMessage;
 import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
@@ -14,7 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by infamouSs on 1/23/18.
@@ -23,8 +24,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "tbl_province_city")
 public class ProvinceCity extends BaseEntity implements Serializable {
     
-    @NotBlank(message = "Name is required")
     @Column(name = "name", nullable = false)
+    @NotNull(message = "Name cannot be empty. Please enter a valid name")
+    @Size(min = 1)
     private String name;
     
     @OneToMany(
@@ -42,18 +44,18 @@ public class ProvinceCity extends BaseEntity implements Serializable {
     
     public ProvinceCity(String name) {
         super();
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         this.name = name;
     }
     
     @Override
     public void update(Object... fields) {
-        String name = (String) fields[0];
-        List<District> districts = (List<District>) fields[1];
+        String _name = (String) fields[0];
+        List<District> _districts = (List<District>) fields[1];
+        PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
         
-        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
-        
-        this.name = name;
-        this.districts = districts;
+        this.name = _name;
+        this.districts = _districts;
     }
     
     public void addDistrict(District district) {
@@ -77,6 +79,7 @@ public class ProvinceCity extends BaseEntity implements Serializable {
     }
     
     public void setName(String name) {
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         this.name = name;
     }
     
@@ -108,6 +111,7 @@ public class ProvinceCity extends BaseEntity implements Serializable {
     public String toString() {
         return "ProvinceCity{" +
                "name='" + name + '\'' +
+               ", districts=" + districts +
                '}';
     }
 }

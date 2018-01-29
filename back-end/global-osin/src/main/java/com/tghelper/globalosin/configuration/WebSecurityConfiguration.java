@@ -13,17 +13,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                   .cors()
                   .and()
-                  .exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint("Unauthenticated"))
+                  .exceptionHandling()
+                  .authenticationEntryPoint(new Http401AuthenticationEntryPoint("Unauthenticated"))
                   .and()
                   .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                   .authorizeRequests()
                   .antMatchers("/**").permitAll()
-                  .anyRequest().authenticated();
+                  .anyRequest().permitAll();
     }
 }

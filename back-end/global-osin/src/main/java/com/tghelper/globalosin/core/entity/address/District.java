@@ -1,6 +1,6 @@
 package com.tghelper.globalosin.core.entity.address;
 
-import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.core.ApplicationMessage;
 import com.tghelper.globalosin.core.PreCondition;
 import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by infamouSs on 1/23/18.
@@ -24,6 +26,8 @@ import javax.persistence.Table;
 public class District extends BaseEntity implements Serializable {
     
     @Column(name = "name", nullable = false)
+    @NotNull(message = "Name cannot be empty. Please enter a valid name")
+    @Size(min = 1)
     private String name;
     
     @OneToMany(
@@ -46,13 +50,13 @@ public class District extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String name = (String) fields[0];
-        List<Wand> wands = (List<Wand>) fields[1];
+        String _name = (String) fields[0];
+        List<Wand> _wands = (List<Wand>) fields[1];
         
-        PreCondition.notEmpty(name, AppError.NAME_IS_REQUIRED);
+        PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
         
-        this.name = name;
-        this.wands = wands;
+        this.name = _name;
+        this.wands = _wands;
     }
     
     public List<Wand> getWands() {
@@ -64,6 +68,7 @@ public class District extends BaseEntity implements Serializable {
     }
     
     public void addWand(Wand wand) {
+        PreCondition.notNull(wand, ApplicationMessage.WAND_IS_NULL);
         if (this.wands == null) {
             this.wands = new ArrayList<>();
         }
@@ -75,6 +80,8 @@ public class District extends BaseEntity implements Serializable {
     }
     
     public void setName(String name) {
+        PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
+        
         this.name = name;
     }
     
@@ -106,6 +113,7 @@ public class District extends BaseEntity implements Serializable {
     public String toString() {
         return "District{" +
                "name='" + name + '\'' +
+               ", wands=" + wands +
                '}';
     }
 }

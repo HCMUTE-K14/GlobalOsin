@@ -1,4 +1,4 @@
-package com.tghelper.globalosin.application.api;
+package com.tghelper.globalosin.application.model;
 
 import java.util.Date;
 import org.springframework.http.HttpStatus;
@@ -9,26 +9,26 @@ import org.springframework.http.HttpStatus;
 
 public class JsonResponse<T> {
     
-    private Date date;
+    private Date timestamp;
     private int code;
     private String status_text;
     private boolean success;
     private T data;
     
     private JsonResponse(Builder<T> builder) {
-        this.date = new Date();
+        this.timestamp = new Date();
         this.code = builder.code;
         this.status_text = builder.status;
         this.success = builder.success;
         this.data = builder.data;
     }
     
-    public Date getDate() {
-        return date;
+    public Date getTimestamp() {
+        return timestamp;
     }
     
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
     
     public int getCode() {
@@ -70,9 +70,6 @@ public class JsonResponse<T> {
         boolean success;
         T data;
         
-        public Builder() {
-        }
-        
         public Builder setHttpStatus(HttpStatus httpStatus) {
             this.code = httpStatus.value();
             this.status = httpStatus.getReasonPhrase();
@@ -90,7 +87,7 @@ public class JsonResponse<T> {
         }
         
         public JsonResponse build() {
-            return new JsonResponse<T>(this);
+            return new JsonResponse<>(this);
         }
     }
     

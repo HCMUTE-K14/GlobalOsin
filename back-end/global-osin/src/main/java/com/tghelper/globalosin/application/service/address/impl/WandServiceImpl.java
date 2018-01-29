@@ -1,9 +1,10 @@
 package com.tghelper.globalosin.application.service.address.impl;
 
-import com.tghelper.globalosin.core.entity.address.Wand;
-import com.tghelper.globalosin.core.repository.address.WandRepository;
 import com.tghelper.globalosin.application.service.BaseServiceImpl;
 import com.tghelper.globalosin.application.service.address.WandService;
+import com.tghelper.globalosin.core.entity.address.Wand;
+import com.tghelper.globalosin.core.repository.address.WandRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class WandServiceImpl extends BaseServiceImpl<Wand, String, WandRepository> implements
                                                                                    WandService {
     
+    @Autowired
     public WandServiceImpl(WandRepository repository) {
         super(repository);
     }

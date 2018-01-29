@@ -7,7 +7,10 @@ import com.tghelper.globalosin.exception.EntityAlreadyExistsException;
 import com.tghelper.globalosin.exception.EntityDoesNotExistException;
 import com.tghelper.globalosin.exception.FindAllException;
 import java.util.List;
+import javax.persistence.RollbackException;
 import javax.validation.ConstraintViolationException;
+import org.hibernate.HibernateException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -17,9 +20,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class BaseServiceImpl<T, ID extends String, R extends JpaRepository<T, ID>> implements
                                                                                             BaseService<T, ID> {
     
-    protected R mRepository;
+    protected final R mRepository;
     
-    public BaseServiceImpl(R repository) {
+    protected BaseServiceImpl(R repository) {
         this.mRepository = repository;
     }
     
@@ -49,16 +52,27 @@ public abstract class BaseServiceImpl<T, ID extends String, R extends JpaReposit
     public void create(T entity) {
         try {
             this.mRepository.save(entity);
-        } catch (Exception ex) {
-            if (ex instanceof ConstraintViolationException) {
-                throw new EntityAlreadyExistsException("Entity already exists", ex);
-            }
+        } catch (ConstraintViolationException ex) {
+            throw ex;
+        } catch (IllegalArgumentException | NullPointerException | RollbackException ex) {
+            throw new CreateEntityException(ex.getMessage(), ex);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistsException("Entity already exists", ex);
+        } catch (HibernateException ex) {
             throw new CreateEntityException(
-                      "Something went wrong when creating new " + entity.getClass().getName(), ex);
+                      "Something went wrong when creating new " + entity.getClass().getName(),
+                      ex);
         }
     }
     
-    abstract public T update(T entity);
+    
+    /***
+     *
+     * @param entity
+     * @return
+     */
+    
+    public abstract T update(T entity);
     
     @Override
     public void delete(T entity) {

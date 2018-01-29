@@ -1,5 +1,7 @@
 package com.tghelper.globalosin.core;
 
+import com.tghelper.globalosin.utils.TextUtils;
+
 /**
  * Created by infamouSs on 1/26/18.
  */
@@ -7,6 +9,7 @@ package com.tghelper.globalosin.core;
 public final class PreCondition {
     
     private PreCondition() {
+        throw new IllegalStateException("Utility class");
     }
     
     public static void isTrue(boolean expression, String errorMessageTemplate,
@@ -21,12 +24,12 @@ public final class PreCondition {
     }
     
     public static void notEmpty(String string, String errorMessage) {
-        if (string.isEmpty()) {
+        if (TextUtils.isEmpty(string)) {
             throw new IllegalArgumentException(errorMessage);
         }
     }
     
-    public static void notEmpty(String string, AppError error) {
+    public static void notEmpty(String string, ApplicationMessage error) {
         notEmpty(string, error.getMessage());
     }
     
@@ -36,7 +39,9 @@ public final class PreCondition {
         }
     }
     
-    public static void notNull(Object reference, AppError error) {
+    public static void notNull(Object reference, ApplicationMessage error) {
         notNull(reference, error.getMessage());
     }
+    
+    
 }

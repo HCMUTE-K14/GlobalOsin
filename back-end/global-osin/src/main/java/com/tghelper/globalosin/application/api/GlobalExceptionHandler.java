@@ -1,16 +1,18 @@
 package com.tghelper.globalosin.application.api;
 
-import com.tghelper.globalosin.core.AppError;
+import com.tghelper.globalosin.application.model.JsonResponse;
+import com.tghelper.globalosin.core.ApplicationMessage;
 import java.io.IOException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 /**
  * Created by infamouSs on 1/27/18.
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler extends BaseController {
     
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -18,22 +20,22 @@ public class GlobalExceptionHandler extends BaseController {
     public JsonResponse handleIOException() {
         LOGGER.error("IOException handler occurred");
         
-        return new JsonResponse.Builder<AppError>()
-                  .setData(AppError.IO_OCCURRED)
+        return new JsonResponse.Builder<ApplicationMessage>()
+                  .setData(ApplicationMessage.IO_OCCURRED)
                   .isSuccess(false)
                   .setHttpStatus(HttpStatus.NOT_FOUND)
                   .build();
     }
     
-    
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
-    protected JsonResponse handleException(Exception ex) {
-        LOGGER.error(ex.getMessage());
-        return new JsonResponse.Builder<AppError>()
-                  .setData(AppError.UNKNOWN_ERROR)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TemplateInputException.class)
+    public JsonResponse handleTemplateNotFound() {
+        LOGGER.error("Template handler occurred");
+        
+        return new JsonResponse.Builder<ApplicationMessage>()
+                  .setData(ApplicationMessage.UNKNOWN_ERROR)
                   .isSuccess(false)
-                  .setHttpStatus(HttpStatus.SERVICE_UNAVAILABLE)
+                  .setHttpStatus(HttpStatus.NOT_FOUND)
                   .build();
     }
 }
