@@ -1,5 +1,6 @@
 package com.tghelper.globalosin.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tghelper.globalosin.utils.TextUtils;
 import com.tghelper.globalosin.utils.UUIDGenerator;
 import java.io.Serializable;
@@ -25,24 +26,20 @@ public abstract class BaseEntity implements Serializable {
     private String id;
     
     @Column(name = "date_created", nullable = false)
+    @JsonIgnore
     private Date dateCreated;
     
     @Column(name = "date_modified", nullable = false)
+    @JsonIgnore
     private Date dateModified;
     
     protected BaseEntity() {
-        if (TextUtils.isEmpty(this.id)) {
-            this.id = UUIDGenerator.randomUUID();
-        }
     }
     
     @PrePersist
     protected void onCreate() {
         this.dateCreated = new Date();
         this.dateModified = new Date();
-        if (TextUtils.isEmpty(this.id)) {
-            this.id = UUIDGenerator.randomUUID();
-        }
     }
     
     @PreUpdate

@@ -39,6 +39,10 @@ public class District extends BaseEntity implements Serializable {
     @OrderBy("name ASC")
     private List<Wand> wands;
     
+    @Column(name = "province_city_id")
+    private String province_city_id;
+    
+    
     public District() {
         super();
     }
@@ -50,7 +54,7 @@ public class District extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String _name = (String) fields[0];
+        String _name = ((String) fields[0]).trim();
         List<Wand> _wands = (List<Wand>) fields[1];
         
         PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
@@ -83,6 +87,14 @@ public class District extends BaseEntity implements Serializable {
         PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         
         this.name = name;
+    }
+    
+    public String getProvince_city_id() {
+        return province_city_id;
+    }
+    
+    public void setProvince_city_id(String province_city_id) {
+        this.province_city_id = province_city_id;
     }
     
     @Override

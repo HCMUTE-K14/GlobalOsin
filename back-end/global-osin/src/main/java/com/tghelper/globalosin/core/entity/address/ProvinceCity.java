@@ -50,7 +50,7 @@ public class ProvinceCity extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String _name = (String) fields[0];
+        String _name = ((String) fields[0]).trim();
         List<District> _districts = (List<District>) fields[1];
         PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
         

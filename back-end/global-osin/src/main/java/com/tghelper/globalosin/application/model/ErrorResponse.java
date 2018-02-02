@@ -6,19 +6,12 @@ package com.tghelper.globalosin.application.model;
 
 public class ErrorResponse {
     
-    private String message;
     private String name;
+    private String message;
     
-    public ErrorResponse(String message, String name) {
-        this.message = message;
+    
+    public ErrorResponse(String name, String message) {
         this.name = name;
-    }
-    
-    public String getMessage() {
-        return message;
-    }
-    
-    public void setMessage(String message) {
         this.message = message;
     }
     
@@ -28,5 +21,13 @@ public class ErrorResponse {
     
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

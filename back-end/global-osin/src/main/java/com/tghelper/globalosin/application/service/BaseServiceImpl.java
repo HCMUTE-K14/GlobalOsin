@@ -91,4 +91,8 @@ public abstract class BaseServiceImpl<T, ID extends String, R extends JpaReposit
             throw new CountEntityException("Something went wrong when counting entity", ex);
         }
     }
+    
+    public boolean isNullOrEmptyList(List list) {
+        return list == null || list.isEmpty();
+    }
 }

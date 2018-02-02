@@ -38,6 +38,9 @@ public class Wand extends BaseEntity implements Serializable {
     @OrderBy("name ASC")
     private List<Street> streets;
     
+    @Column(name = "district_id")
+    private String district_id;
+    
     public Wand() {
         super();
     }
@@ -49,7 +52,7 @@ public class Wand extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String _name = (String) fields[0];
+        String _name = ((String) fields[0]).trim();
         List<Street> _streets = (List<Street>) fields[1];
         
         PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
@@ -73,6 +76,14 @@ public class Wand extends BaseEntity implements Serializable {
     
     public void setStreets(List<Street> streets) {
         this.streets = streets;
+    }
+    
+    public String getDistrict_id() {
+        return district_id;
+    }
+    
+    public void setDistrict_id(String district_id) {
+        this.district_id = district_id;
     }
     
     public void addStreet(Street street) {

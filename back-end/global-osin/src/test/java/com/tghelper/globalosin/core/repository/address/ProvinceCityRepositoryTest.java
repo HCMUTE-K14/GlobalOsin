@@ -2,6 +2,9 @@ package com.tghelper.globalosin.core.repository.address;
 
 import com.tghelper.globalosin.core.entity.address.District;
 import com.tghelper.globalosin.core.entity.address.ProvinceCity;
+import com.tghelper.globalosin.core.entity.address.Street;
+import com.tghelper.globalosin.core.entity.address.Wand;
+import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
@@ -34,8 +37,8 @@ public class ProvinceCityRepositoryTest {
     
     @Before
     public void init() {
-        //        ProvinceCity provinceCity = createProvinceData();
-        //        mProvinceCityRepository.save(provinceCity);
+        ProvinceCity provinceCity = createProvinceData("Tp Ho Chi Minh");
+        mProvinceCityRepository.save(provinceCity);
     }
     
     private ProvinceCity createProvinceData(String name) {
@@ -43,6 +46,11 @@ public class ProvinceCityRepositoryTest {
         
         District district = new District("Quan 1");
         District district1 = new District("Quan 2");
+        Wand wand = new Wand("Phuong 1");
+        wand.addStreet(new Street("Street 1"));
+        wand.addStreet(new Street("Street 2"));
+        district.addWand(wand);
+        district.addWand(new Wand("Phuong 2"));
         
         provinceCity.addDistrict(district1);
         provinceCity.addDistrict(district);
@@ -54,8 +62,11 @@ public class ProvinceCityRepositoryTest {
     public void testSaveProvinceCity() {
         ProvinceCity provinceCity = createProvinceData("Ho Chi Minh City");
         mProvinceCityRepository.save(provinceCity);
+        List<ProvinceCity> lists = mProvinceCityRepository
+                  .findProvinceCitiesByNameContainingIgnoreCase("Ho Chi Minh");
         
-        Assert.assertNotNull(mProvinceCityRepository.findAll());
+        System.out.println(lists);
+        Assert.assertNotNull(lists);
     }
     
     @Test
@@ -93,9 +104,9 @@ public class ProvinceCityRepositoryTest {
         ProvinceCity provinceCity1 = createProvinceData("Ho Chi Minh City");
         mProvinceCityRepository.save(provinceCity1);
         
-        ProvinceCity provinceCity = mProvinceCityRepository
-                  .findProvinceCitiesByName("Ho Chi Minh City");
-        System.out.println(provinceCity.getDistricts());
+        List<ProvinceCity> provinceCity = mProvinceCityRepository
+                  .findProvinceCitiesByNameContainingIgnoreCase("Ho Chi Minh City");
+        System.out.println(provinceCity);
         Assert.assertNotNull(provinceCity);
     }
     
@@ -113,8 +124,8 @@ public class ProvinceCityRepositoryTest {
         
         mProvinceCityRepository.save(provinceCityNeedToUpdate);
         
-        ProvinceCity hanoiProvince = (ProvinceCity) mProvinceCityRepository
-                  .findProvinceCitiesByName("Ha Noi City");
+        ProvinceCity hanoiProvince = mProvinceCityRepository
+                  .findProvinceCitiesByNameContainingIgnoreCase("Ha Noi City").get(0);
         
         System.out.println(hanoiProvince.getDistricts());
         

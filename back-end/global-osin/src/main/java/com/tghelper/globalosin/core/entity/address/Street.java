@@ -22,6 +22,9 @@ public class Street extends BaseEntity implements Serializable {
     @Size(min = 1)
     private String name;
     
+    @Column(name = "wand_id")
+    private String wand_id;
+    
     public Street() {
         super();
     }
@@ -33,7 +36,7 @@ public class Street extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String _name = (String) fields[0];
+        String _name = ((String) fields[0]).trim();
         
         PreCondition.notEmpty(_name, ApplicationMessage.NAME_IS_REQUIRED);
         
@@ -47,6 +50,14 @@ public class Street extends BaseEntity implements Serializable {
     public void setName(String name) {
         PreCondition.notEmpty(name, ApplicationMessage.NAME_IS_REQUIRED);
         this.name = name;
+    }
+    
+    public String getWand_id() {
+        return wand_id;
+    }
+    
+    public void setWand_id(String wand_id) {
+        this.wand_id = wand_id;
     }
     
     @Override

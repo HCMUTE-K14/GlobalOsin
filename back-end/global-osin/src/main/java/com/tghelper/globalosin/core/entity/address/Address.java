@@ -73,7 +73,7 @@ public class Address extends BaseEntity implements Serializable {
     
     @Override
     public void update(Object... fields) {
-        String _fullAddress = (String) fields[0];
+        String _fullAddress = ((String) fields[0]).trim();
         double _latitude = (double) fields[1];
         double _longitude = (double) fields[2];
         Street _street = (Street) fields[3];
@@ -186,6 +186,8 @@ public class Address extends BaseEntity implements Serializable {
     public String toString() {
         return "Address{" +
                "fullAddress='" + fullAddress + '\'' +
+               ", latitude=" + latitude +
+               ", longitude=" + longitude +
                ", street=" + street +
                ", wand=" + wand +
                ", district=" + district +

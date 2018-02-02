@@ -6,6 +6,7 @@ import com.tghelper.globalosin.core.entity.address.ProvinceCity;
 import com.tghelper.globalosin.core.repository.address.ProvinceCityRepository;
 import com.tghelper.globalosin.exception.EntityDoesNotExistException;
 import com.tghelper.globalosin.exception.UpdateEntityException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,10 @@ public class ProvinceCityServiceImpl extends
         try {
             ProvinceCity updated = findById(entity.getId());
             
-            updated.update(entity.getName(), entity.getDistricts());
+            updated.update(entity.getName(),
+                      isNullOrEmptyList(entity.getDistricts())
+                                ? updated.getDistricts()
+                                : entity.getDistricts());
             
             return mRepository.save(updated);
         } catch (Exception ex) {
@@ -37,13 +41,15 @@ public class ProvinceCityServiceImpl extends
     }
     
     @Override
-    public ProvinceCity findProvinceCityByName(String name) {
+    public List<ProvinceCity> findProvinceCitiesNameLike(String name) {
         try {
-            ProvinceCity provinceCity = mRepository.findProvinceCitiesByName(name);
-            if (provinceCity == null) {
+            List<ProvinceCity> provinceCities = mRepository
+                      .findProvinceCitiesByNameContainingIgnoreCase(name.trim());
+            if (provinceCities == null) {
                 throw new EntityDoesNotExistException(name + " does not exist");
             }
-            return provinceCity;
+            
+            return provinceCities;
         } catch (Exception ex) {
             throw new EntityDoesNotExistException(name + " does not exist", ex);
         }

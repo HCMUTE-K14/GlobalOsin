@@ -2,6 +2,7 @@ package com.tghelper.globalosin.application.service.address;
 
 import com.tghelper.globalosin.core.entity.address.District;
 import com.tghelper.globalosin.core.entity.address.ProvinceCity;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,15 +42,9 @@ public class ProvinceCityServiceTest {
     @Test
     public void testSaveProvinceCity() {
         try {
+            List<ProvinceCity> lists = mProvinceCityService.findProvinceCitiesNameLike("Tp");
             
-            ProvinceCity provinceCity = mProvinceCityService.findProvinceCityByName("123456");
-            
-            ProvinceCity newProvince = createProvinceData();
-            newProvince.setId(provinceCity.getId());
-            
-            mProvinceCityService.update(newProvince);
-            
-            System.out.println(mProvinceCityService.findAll().get(0).getDistricts());
+            System.out.println(lists);
         } catch (Exception ex) {
             throw ex;
         }

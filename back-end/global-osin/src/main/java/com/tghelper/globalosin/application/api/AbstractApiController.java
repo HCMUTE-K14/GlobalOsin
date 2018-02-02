@@ -30,9 +30,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 
 @RequestMapping("/api/v1")
-public abstract class BaseController {
+public abstract class AbstractApiController {
     
-    protected static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractApiController.class);
     
     @ExceptionHandler(EntityDoesNotExistException.class)
     @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
@@ -100,7 +100,7 @@ public abstract class BaseController {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
     public JsonResponse handleConstraintViolationException(Exception ex) {
-        LOGGER.error("Template handler occurred");
+        LOGGER.error("[ERROR] DataIntegrityViolationException/ConstraintViolationException handler occurred");
         
         if (ex instanceof ConstraintViolationException) {
             ((ConstraintViolationException) ex).getConstraintViolations();

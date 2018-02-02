@@ -1,19 +1,20 @@
 package com.tghelper.globalosin.application.api;
 
+import com.tghelper.globalosin.application.model.ErrorResponse;
 import com.tghelper.globalosin.application.model.JsonResponse;
 import com.tghelper.globalosin.core.ApplicationMessage;
+import com.tghelper.globalosin.exception.BadRequestParamException;
 import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.thymeleaf.exceptions.TemplateInputException;
 
 /**
  * Created by infamouSs on 1/27/18.
  */
 @RestControllerAdvice
-public class GlobalExceptionHandler extends BaseController {
+public class GlobalExceptionHandler extends AbstractApiController {
     
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(IOException.class)
@@ -27,15 +28,15 @@ public class GlobalExceptionHandler extends BaseController {
                   .build();
     }
     
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(TemplateInputException.class)
-    public JsonResponse handleTemplateNotFound() {
-        LOGGER.error("Template handler occurred");
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadRequestParamException.class)
+    public JsonResponse handleBadRequestParamException(BadRequestParamException ex) {
+        LOGGER.error("BadRequestParamException handler occurred");
         
-        return new JsonResponse.Builder<ApplicationMessage>()
-                  .setData(ApplicationMessage.UNKNOWN_ERROR)
+        return new JsonResponse.Builder<ErrorResponse>()
+                  .setData(new ErrorResponse("Bad Request Param", ex.getMessage()))
                   .isSuccess(false)
-                  .setHttpStatus(HttpStatus.NOT_FOUND)
+                  .setHttpStatus(HttpStatus.BAD_REQUEST)
                   .build();
     }
 }
