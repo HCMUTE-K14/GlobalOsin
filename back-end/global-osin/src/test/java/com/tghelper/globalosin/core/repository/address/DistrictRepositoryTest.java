@@ -20,6 +20,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Transactional
 public class DistrictRepositoryTest {
     
+    @Autowired
+    ProvinceCityRepository mProvinceCityRepository;
+    @Autowired
+    DistrictRepository mDistrictRepository;
+    
     private ProvinceCity createProvinceData(String name) {
         ProvinceCity provinceCity = new ProvinceCity(name);
         
@@ -32,24 +37,18 @@ public class DistrictRepositoryTest {
         return provinceCity;
     }
     
-    @Autowired
-    ProvinceCityRepository mProvinceCityRepository;
-    
-    @Autowired
-    DistrictRepository mDistrictRepository;
-    
     @Before
     public void init() {
     
     }
     
     @Test
-    public void testSaveDistrict(){
+    public void testSaveDistrict() {
         District district = new District("QUAN THU DUC");
         
         district.addWand(new Wand("Binh Tho"));
         district.addWand(new Wand("Linh Chieu"));
-    
+        
         mDistrictRepository.save(district);
         
         System.out.println(district.getId());

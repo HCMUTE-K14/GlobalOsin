@@ -6,9 +6,6 @@ import com.tghelper.globalosin.core.entity.BaseEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,24 +28,15 @@ public class Address extends BaseEntity implements Serializable {
     @Column(name = "longitude", nullable = true)
     private double longitude;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "street_id")
-    private Street street;
+    @Column(name = "street_id", nullable = true)
+    private String street;
+    @Column(name = "wand_id", nullable = true)
+    private String wand;
+    @Column(name = "district_id", nullable = true)
+    private String district;
+    @Column(name = "province_city_id", nullable = true)
+    private String provinceCity;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wand_id", nullable = false)
-    @NotNull(message = "Wand is required. Please choose a wand")
-    private Wand wand;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "district_id", nullable = false)
-    @NotNull(message = "District is required. Please choose a district")
-    private District district;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "province_city_id", nullable = false)
-    @NotNull(message = "Province/City is required. Please choose a province or city")
-    private ProvinceCity provinceCity;
     
     public Address() {
         super();
@@ -59,32 +47,20 @@ public class Address extends BaseEntity implements Serializable {
         this.fullAddress = fullAddress;
     }
     
-    public Address(String fullAddress, double latitude, double longitude,
-              Street street, Wand wand, District district,
-              ProvinceCity provinceCity) {
-        this.fullAddress = fullAddress;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.street = street;
-        this.wand = wand;
-        this.district = district;
-        this.provinceCity = provinceCity;
-    }
-    
     @Override
     public void update(Object... fields) {
         String _fullAddress = ((String) fields[0]).trim();
         double _latitude = (double) fields[1];
         double _longitude = (double) fields[2];
-        Street _street = (Street) fields[3];
-        Wand _wand = (Wand) fields[4];
-        District _district = (District) fields[5];
-        ProvinceCity _provinceCity = (ProvinceCity) fields[6];
+        String _street = (String) fields[3];
+        String _wand = (String) fields[4];
+        String _district = (String) fields[5];
+        String _provinceCity = (String) fields[6];
         
         PreCondition.notEmpty(_fullAddress, ApplicationMessage.FULL_ADDRESS_IS_REQUIRED);
-        PreCondition.notNull(_wand, ApplicationMessage.WAND_IS_REQUIRED);
-        PreCondition.notNull(_district, ApplicationMessage.DISTRICT_IS_REQUIRED);
-        PreCondition.notNull(_provinceCity, ApplicationMessage.PROVINCE_CITY_IS_REQUIRED);
+        PreCondition.notEmpty(_wand, ApplicationMessage.WAND_IS_REQUIRED);
+        PreCondition.notEmpty(_district, ApplicationMessage.DISTRICT_IS_REQUIRED);
+        PreCondition.notEmpty(_provinceCity, ApplicationMessage.PROVINCE_CITY_IS_REQUIRED);
         
         this.fullAddress = _fullAddress;
         this.latitude = _latitude;
@@ -100,7 +76,6 @@ public class Address extends BaseEntity implements Serializable {
     }
     
     public void setFullAddress(String fullAddress) {
-        PreCondition.notEmpty(fullAddress, ApplicationMessage.FULL_ADDRESS_IS_REQUIRED);
         this.fullAddress = fullAddress;
     }
     
@@ -120,40 +95,35 @@ public class Address extends BaseEntity implements Serializable {
         this.longitude = longitude;
     }
     
-    public Street getStreet() {
+    public String getStreet() {
         return street;
     }
     
-    public void setStreet(Street street) {
+    public void setStreet(String street) {
         this.street = street;
     }
     
-    public Wand getWand() {
+    public String getWand() {
         return wand;
     }
     
-    public void setWand(Wand wand) {
-        PreCondition.notNull(wand, ApplicationMessage.WAND_IS_REQUIRED);
-        
+    public void setWand(String wand) {
         this.wand = wand;
     }
     
-    public District getDistrict() {
+    public String getDistrict() {
         return district;
     }
     
-    public void setDistrict(District district) {
-        PreCondition.notNull(district, ApplicationMessage.DISTRICT_IS_REQUIRED);
+    public void setDistrict(String district) {
         this.district = district;
     }
     
-    public ProvinceCity getProvinceCity() {
-        PreCondition.notNull(provinceCity, ApplicationMessage.PROVINCE_CITY_IS_REQUIRED);
+    public String getProvinceCity() {
         return provinceCity;
     }
     
-    public void setProvinceCity(ProvinceCity provinceCity) {
-        PreCondition.notNull(provinceCity, ApplicationMessage.PROVINCE_CITY_IS_REQUIRED);
+    public void setProvinceCity(String provinceCity) {
         this.provinceCity = provinceCity;
     }
     

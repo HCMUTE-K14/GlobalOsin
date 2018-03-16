@@ -1,4 +1,4 @@
-package com.tghelper.globalosin.configuration;
+package com.tghelper.globalosin.application.security;
 
 import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;

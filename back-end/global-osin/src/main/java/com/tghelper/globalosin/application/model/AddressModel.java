@@ -12,8 +12,7 @@ public class AddressModel {
     private String street;
     private String wand;
     private String district;
-    private String dateCreated;
-    private String dateModified;
+    private String province;
     
     public String getId() {
         return id;
@@ -63,19 +62,11 @@ public class AddressModel {
         this.district = district;
     }
     
-    public String getDateCreated() {
-        return dateCreated;
+    public String getProvince() {
+        return province;
     }
     
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-    
-    public String getDateModified() {
-        return dateModified;
-    }
-    
-    public void setDateModified(String dateModified) {
-        this.dateModified = dateModified;
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

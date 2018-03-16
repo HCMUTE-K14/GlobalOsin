@@ -1,7 +1,7 @@
 package com.tghelper.globalosin.application.service.address.impl;
 
 import com.tghelper.globalosin.application.service.BaseServiceImpl;
-import com.tghelper.globalosin.application.service.SearchType;
+import com.tghelper.globalosin.application.service.address.SearchType;
 import com.tghelper.globalosin.application.service.address.StreetService;
 import com.tghelper.globalosin.core.entity.address.Street;
 import com.tghelper.globalosin.core.repository.address.StreetRepository;
