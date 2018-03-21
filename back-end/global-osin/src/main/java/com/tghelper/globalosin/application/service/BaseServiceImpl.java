@@ -84,6 +84,15 @@ public abstract class BaseServiceImpl<T, ID extends String, R extends JpaReposit
     }
     
     @Override
+	public void delete(String id) {
+    	try {
+            this.mRepository.delete((ID) id);
+        } catch (Exception ex) {
+            throw new DeleteEntityException("Something went wrong when deleting entity", ex);
+        }
+	}
+
+	@Override
     public long count() {
         try {
             return this.mRepository.count();

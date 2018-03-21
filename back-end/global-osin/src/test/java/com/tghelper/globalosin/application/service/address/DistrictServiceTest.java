@@ -1,6 +1,5 @@
 package com.tghelper.globalosin.application.service.address;
 
-import com.tghelper.globalosin.application.service.SearchType;
 import com.tghelper.globalosin.core.entity.address.District;
 import com.tghelper.globalosin.core.entity.address.ProvinceCity;
 import com.tghelper.globalosin.core.entity.address.Street;

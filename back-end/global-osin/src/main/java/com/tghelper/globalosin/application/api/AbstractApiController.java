@@ -100,7 +100,8 @@ public abstract class AbstractApiController {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
     public JsonResponse handleConstraintViolationException(Exception ex) {
-        LOGGER.error("[ERROR] DataIntegrityViolationException/ConstraintViolationException handler occurred");
+        LOGGER.error(
+                  "[ERROR] DataIntegrityViolationException/ConstraintViolationException handler occurred");
         
         if (ex instanceof ConstraintViolationException) {
             ((ConstraintViolationException) ex).getConstraintViolations();

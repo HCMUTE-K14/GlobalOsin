@@ -33,6 +33,25 @@ public interface AddressRepository extends JpaRepository<Address, String> {
                    "AND LOWER(tbl_street.name) LIKE CONCAT('%', LOWER (:name), '%')", nativeQuery = true)
     List<Address> findAddressByStreetNameLike(@Param("name") String name);
     
-    List<Address> findAddressByNameContainingIgnoreCase(String name);
+    @Query(value = "SELECT * FROM tbl_address " +
+                   "WHERE province_city_id = :id", nativeQuery = true)
+    List<Address> findAddressByProvinceCityId(@Param("id") String id);
+    
+    @Query(value = "SELECT * FROM tbl_address " +
+                   "WHERE district_id = :id", nativeQuery = true)
+    List<Address> findAddressByDistrictId(@Param("id") String id);
+    
+    
+    @Query(value = "SELECT * FROM tbl_address " +
+                   "WHERE wand_id = :id", nativeQuery = true)
+    List<Address> findAddressByWandId(@Param("id") String id);
+    
+    
+    @Query(value = "SELECT * FROM tbl_address " +
+                   "WHERE street_id = :id", nativeQuery = true)
+    List<Address> findAddressByStreetId(@Param("id") String id);
+    
+    
+    List<Address> findAddressByFullAddressContainingIgnoreCase(String name);
     
 }

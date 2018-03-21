@@ -2,7 +2,7 @@ package com.tghelper.globalosin.application.api.address;
 
 import com.tghelper.globalosin.application.api.AbstractApiController;
 import com.tghelper.globalosin.application.model.JsonResponse;
-import com.tghelper.globalosin.application.service.SearchType;
+import com.tghelper.globalosin.application.service.address.SearchType;
 import com.tghelper.globalosin.application.service.address.DistrictService;
 import com.tghelper.globalosin.core.ApplicationMessage;
 import com.tghelper.globalosin.core.entity.address.District;

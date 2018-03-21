@@ -19,5 +19,7 @@ public interface BaseService<T, ID extends Serializable> {
     
     void delete(T entity);
     
+    void delete(String id);
+    
     long count();
 }
